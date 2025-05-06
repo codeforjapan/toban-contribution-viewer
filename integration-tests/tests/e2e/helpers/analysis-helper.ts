@@ -4,14 +4,22 @@ import { Page, expect } from '@playwright/test';
  * Helper functions for analysis-related operations
  */
 export class AnalysisHelper {
-  constructor(private page: Page) {}
+  private baseUrl: string;
+
+  constructor(private page: Page) {
+    this.baseUrl = 'http://test-frontend:5173';
+  }
 
   /**
    * Navigate to the analysis page
    */
   async navigateToAnalysisPage() {
-    await this.page.goto('/analysis');
-    await expect(this.page.locator('h1:has-text("Analysis")')).toBeVisible();
+    console.log(`Navigating to analysis page: ${this.baseUrl}/analysis`);
+    await this.page.goto(`${this.baseUrl}/analysis`, { timeout: 60000 });
+    await this.page.screenshot({ path: '/app/results/analysis-page-debug.png' });
+    
+    await expect(this.page.locator('body')).toBeVisible({ timeout: 30000 });
+    await expect(this.page.locator('h1:has-text("Analysis")')).toBeVisible({ timeout: 30000 });
   }
 
   /**
@@ -68,8 +76,8 @@ export class AnalysisHelper {
    * @param analysisId ID of the analysis to view
    */
   async viewAnalysisResults(analysisId: string) {
-    await this.page.goto(`/analysis/${analysisId}`);
-    await expect(this.page.locator('h1:has-text("Analysis Results")')).toBeVisible();
+    await this.page.goto(`${this.baseUrl}/analysis/${analysisId}`, { timeout: 60000 });
+    await expect(this.page.locator('h1:has-text("Analysis Results")')).toBeVisible({ timeout: 30000 });
     
     await expect(this.page.locator('[data-testid="analysis-results"]')).toBeVisible({ timeout: 10000 });
   }
@@ -80,7 +88,7 @@ export class AnalysisHelper {
    * @param reportName Name for the report
    */
   async generateReport(analysisId: string, reportName: string) {
-    await this.page.goto(`/analysis/${analysisId}`);
+    await this.page.goto(`${this.baseUrl}/analysis/${analysisId}`, { timeout: 60000 });
     
     await this.page.locator('[data-testid="generate-report-button"]').click();
     
@@ -95,12 +103,12 @@ export class AnalysisHelper {
    * Get the list of completed analyses
    * @returns Array of analysis IDs
    */
-  async getCompletedAnalyses() {
+  async getCompletedAnalyses(): Promise<string[]> {
     await this.navigateToAnalysisPage();
     
     const analysisItems = await this.page.locator('[data-testid^="analysis-item-"]').all();
     
-    const analysisIds = [];
+    const analysisIds: string[] = [];
     for (const item of analysisItems) {
       const idAttr = await item.getAttribute('data-testid');
       if (idAttr) {

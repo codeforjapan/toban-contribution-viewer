@@ -4,14 +4,22 @@ import { Page, expect } from '@playwright/test';
  * Helper functions for team management operations
  */
 export class TeamHelper {
-  constructor(private page: Page) {}
+  private baseUrl: string;
+
+  constructor(private page: Page) {
+    this.baseUrl = 'http://test-frontend:5173';
+  }
 
   /**
    * Navigate to the teams page
    */
   async navigateToTeamsPage() {
-    await this.page.goto('/teams');
-    await expect(this.page.locator('h1:has-text("Teams")')).toBeVisible();
+    console.log(`Navigating to teams page: ${this.baseUrl}/teams`);
+    await this.page.goto(`${this.baseUrl}/teams`, { timeout: 60000 });
+    await this.page.screenshot({ path: '/app/results/teams-page-debug.png' });
+    
+    await expect(this.page.locator('body')).toBeVisible({ timeout: 30000 });
+    await expect(this.page.locator('h1:has-text("Teams")')).toBeVisible({ timeout: 30000 });
   }
 
   /**
@@ -43,8 +51,8 @@ export class TeamHelper {
    * @param role Role to assign (owner, admin, member, viewer)
    */
   async inviteMember(email: string, role: 'owner' | 'admin' | 'member' | 'viewer') {
-    await this.page.goto('/teams/members');
-    await expect(this.page.locator('h1:has-text("Team Members")')).toBeVisible();
+    await this.page.goto(`${this.baseUrl}/teams/members`, { timeout: 60000 });
+    await expect(this.page.locator('h1:has-text("Team Members")')).toBeVisible({ timeout: 30000 });
     
     await this.page.locator('[data-testid="invite-member-button"]').click();
     
@@ -64,7 +72,7 @@ export class TeamHelper {
    * @param newRole New role to assign
    */
   async changeRole(email: string, newRole: 'owner' | 'admin' | 'member' | 'viewer') {
-    await this.page.goto('/teams/members');
+    await this.page.goto(`${this.baseUrl}/teams/members`, { timeout: 60000 });
     
     const memberRow = this.page.locator(`[data-testid="member-row-${email}"]`);
     
@@ -80,7 +88,7 @@ export class TeamHelper {
    * @param email Email of the member to remove
    */
   async removeMember(email: string) {
-    await this.page.goto('/teams/members');
+    await this.page.goto(`${this.baseUrl}/teams/members`, { timeout: 60000 });
     
     const memberRow = this.page.locator(`[data-testid="member-row-${email}"]`);
     
@@ -95,12 +103,12 @@ export class TeamHelper {
    * Get the list of team members
    * @returns Array of member emails
    */
-  async getTeamMembers() {
-    await this.page.goto('/teams/members');
+  async getTeamMembers(): Promise<string[]> {
+    await this.page.goto(`${this.baseUrl}/teams/members`, { timeout: 60000 });
     
     const memberRows = await this.page.locator('[data-testid^="member-row-"]').all();
     
-    const memberEmails = [];
+    const memberEmails: string[] = [];
     for (const row of memberRows) {
       const emailElement = await row.locator('.member-email').first();
       if (emailElement) {

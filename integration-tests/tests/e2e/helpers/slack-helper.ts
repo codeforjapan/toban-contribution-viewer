@@ -4,14 +4,18 @@ import { Page, expect } from '@playwright/test';
  * Helper functions for Slack integration-related operations
  */
 export class SlackHelper {
-  constructor(private page: Page) {}
+  private baseUrl: string;
+
+  constructor(private page: Page) {
+    this.baseUrl = 'http://test-frontend:5173';
+  }
 
   /**
    * Navigate to the integrations page
    */
   async navigateToIntegrationsPage() {
-    console.log('Navigating to integrations page');
-    await this.page.goto('/integrations', { timeout: 60000 });
+    console.log(`Navigating to integrations page: ${this.baseUrl}/integrations`);
+    await this.page.goto(`${this.baseUrl}/integrations`, { timeout: 60000 });
     await this.page.screenshot({ path: '/app/results/integrations-page-debug.png' });
     
     await expect(this.page.locator('body')).toBeVisible({ timeout: 30000 });
@@ -96,10 +100,10 @@ export class SlackHelper {
    * Get the list of available channels
    * @returns Array of channel names
    */
-  async getAvailableChannels() {
+  async getAvailableChannels(): Promise<string[]> {
     const channelElements = await this.page.locator('[data-testid^="channel-"]').all();
     
-    const channelNames = [];
+    const channelNames: string[] = [];
     for (const element of channelElements) {
       const nameElement = await element.locator('.channel-name').first();
       if (nameElement) {
