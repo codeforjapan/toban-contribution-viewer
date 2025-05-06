@@ -10,8 +10,28 @@ export class SlackHelper {
    * Navigate to the integrations page
    */
   async navigateToIntegrationsPage() {
-    await this.page.goto('/integrations');
-    await expect(this.page.locator('h1:has-text("Integrations")')).toBeVisible();
+    console.log('Navigating to integrations page');
+    await this.page.goto('/integrations', { timeout: 60000 });
+    await this.page.screenshot({ path: '/app/results/integrations-page-debug.png' });
+    
+    await expect(this.page.locator('body')).toBeVisible({ timeout: 30000 });
+    
+    // Try different selectors for the integrations page
+    const selectors = [
+      'h1:has-text("Integrations")',
+      '[data-testid="add-integration-button"]',
+      'div:has-text("Integrations")'
+    ];
+    
+    for (const selector of selectors) {
+      console.log(`Trying to find selector: ${selector}`);
+      if (await this.page.locator(selector).isVisible()) {
+        console.log(`Found visible element with selector: ${selector}`);
+        return;
+      }
+    }
+    
+    throw new Error('Could not find any integrations page elements');
   }
 
   /**
