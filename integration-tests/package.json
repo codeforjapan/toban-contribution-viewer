@@ -7,7 +7,7 @@
     "test:api": "pytest tests/api"
   },
   "dependencies": {
-    "@playwright/test": "^1.40.0",
+    "@playwright/test": "^1.52.0",
     "axios": "^1.6.0"
   },
   "devDependencies": {
