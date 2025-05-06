@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@slack/web-api": "^7.9.1",
+    "@types/node": "^20.11.24",
     "dotenv": "^16.5.0",
     "typescript": "^5.2.2"
   }
