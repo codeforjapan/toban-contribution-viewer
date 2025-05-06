@@ -23,7 +23,7 @@ export class AuthHelper {
    * Navigate to the login page
    */
   async navigateToLoginPage() {
-    await this.page.goto(this.getUrl('/auth/login'));
+    await this.page.goto('/auth/login');
     await expect(this.page.locator('h1:has-text("Sign in")')).toBeVisible();
   }
 
@@ -31,7 +31,7 @@ export class AuthHelper {
    * Navigate to the registration page
    */
   async navigateToSignUpPage() {
-    await this.page.goto(this.getUrl('/auth/signup'));
+    await this.page.goto('/auth/signup');
     await expect(this.page.locator('h1:has-text("Sign up")')).toBeVisible();
   }
 

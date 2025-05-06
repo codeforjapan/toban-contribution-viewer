@@ -24,6 +24,20 @@ until wget -q -O - http://mock-openrouter-api:3000/health > /dev/null 2>&1; do
 done
 echo "Mock OpenRouter API is up!"
 
+echo "Waiting for frontend..."
+for i in $(seq 1 30); do
+  if wget -q --spider http://test-frontend:5173 > /dev/null 2>&1; then
+    echo "Frontend is up!"
+    break
+  fi
+  echo "Frontend is unavailable - sleeping"
+  sleep 2
+  if [ $i -eq 30 ]; then
+    echo "Frontend did not become available in time"
+    exit 1
+  fi
+done
+
 echo "All services are ready!"
 
 exec "$@"
