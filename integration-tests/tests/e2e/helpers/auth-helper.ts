@@ -4,13 +4,26 @@ import { Page, expect } from '@playwright/test';
  * Helper functions for authentication-related operations
  */
 export class AuthHelper {
-  constructor(private page: Page) {}
+  private baseUrl: string;
+
+  constructor(private page: Page) {
+    this.baseUrl = 'http://test-frontend:5173';
+  }
+  
+  /**
+   * Get full URL for a path
+   * @param path Path to append to base URL
+   * @returns Full URL
+   */
+  private getUrl(path: string): string {
+    return `${this.baseUrl}${path}`;
+  }
 
   /**
    * Navigate to the login page
    */
   async navigateToLoginPage() {
-    await this.page.goto('/auth/login');
+    await this.page.goto(this.getUrl('/auth/login'));
     await expect(this.page.locator('h1:has-text("Sign in")')).toBeVisible();
   }
 
@@ -18,7 +31,7 @@ export class AuthHelper {
    * Navigate to the registration page
    */
   async navigateToSignUpPage() {
-    await this.page.goto('/auth/signup');
+    await this.page.goto(this.getUrl('/auth/signup'));
     await expect(this.page.locator('h1:has-text("Sign up")')).toBeVisible();
   }
 
