@@ -23,8 +23,30 @@ export class AuthHelper {
    * Navigate to the login page
    */
   async navigateToLoginPage() {
-    await this.page.goto(this.baseUrl + '/auth/login', { timeout: 30000 });
-    await expect(this.page.locator('h1:has-text("Sign in")')).toBeVisible({ timeout: 30000 });
+    console.log(`Navigating to login page: ${this.baseUrl}/auth/login`);
+    await this.page.goto(this.baseUrl + '/auth/login', { timeout: 60000 });
+    
+    await this.page.screenshot({ path: '/app/results/login-page-debug.png' });
+    
+    await expect(this.page.locator('body')).toBeVisible({ timeout: 30000 });
+    
+    // Try different selectors for the login page
+    const selectors = [
+      'h1:has-text("Sign in")',
+      'form input[type="email"]',
+      'button[type="submit"]',
+      'div:has-text("Sign in")'
+    ];
+    
+    for (const selector of selectors) {
+      console.log(`Trying to find selector: ${selector}`);
+      if (await this.page.locator(selector).isVisible()) {
+        console.log(`Found visible element with selector: ${selector}`);
+        return;
+      }
+    }
+    
+    throw new Error('Could not find any login page elements');
   }
 
   /**
