@@ -20,7 +20,7 @@ export class IntegrationsPage {
    * Navigate to the integrations page
    */
   async goto() {
-    await this.page.goto(`${this.baseUrl}/integrations`, { timeout: 60000 });
+    await this.page.goto('/integrations', { timeout: 60000 });
   }
 
   /**
@@ -92,7 +92,7 @@ export class IntegrationDetailsPage {
    * @param integrationId ID of the integration
    */
   async goto(integrationId: string) {
-    await this.page.goto(`${this.baseUrl}/integrations/${integrationId}`, { timeout: 60000 });
+    await this.page.goto(`/integrations/${integrationId}`, { timeout: 60000 });
   }
 
   /**

@@ -26,7 +26,7 @@ export class LoginPage {
    * Navigate to the login page
    */
   async goto() {
-    await this.page.goto(`${this.baseUrl}/auth/login`, { timeout: 60000 });
+    await this.page.goto('/auth/login', { timeout: 60000 });
   }
 
   /**
@@ -69,7 +69,7 @@ export class SignUpPage {
    * Navigate to the sign up page
    */
   async goto() {
-    await this.page.goto(`${this.baseUrl}/auth/signup`, { timeout: 60000 });
+    await this.page.goto('/auth/signup', { timeout: 60000 });
   }
 
   /**
@@ -108,7 +108,7 @@ export class DashboardPage {
    * Navigate to the dashboard page
    */
   async goto() {
-    await this.page.goto(`${this.baseUrl}/dashboard`, { timeout: 60000 });
+    await this.page.goto('/dashboard', { timeout: 60000 });
   }
 
   /**

@@ -23,8 +23,8 @@ export class AuthHelper {
    * Navigate to the login page
    */
   async navigateToLoginPage() {
-    console.log(`Navigating to login page: ${this.baseUrl}/auth/login`);
-    await this.page.goto(this.baseUrl + '/auth/login', { timeout: 60000 });
+    console.log('Navigating to login page: /auth/login');
+    await this.page.goto('/auth/login', { timeout: 60000 });
     
     await this.page.screenshot({ path: '/app/results/login-page-debug.png' });
     
@@ -53,7 +53,7 @@ export class AuthHelper {
    * Navigate to the registration page
    */
   async navigateToSignUpPage() {
-    await this.page.goto(this.baseUrl + '/auth/signup', { timeout: 30000 });
+    await this.page.goto('/auth/signup', { timeout: 30000 });
     await expect(this.page.locator('h1:has-text("Sign up")')).toBeVisible({ timeout: 30000 });
   }
 

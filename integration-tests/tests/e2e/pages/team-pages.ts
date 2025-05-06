@@ -20,7 +20,7 @@ export class TeamsPage {
    * Navigate to the teams page
    */
   async goto() {
-    await this.page.goto(`${this.baseUrl}/teams`, { timeout: 60000 });
+    await this.page.goto('/teams', { timeout: 60000 });
   }
 
   /**
@@ -90,7 +90,7 @@ export class TeamMembersPage {
    * Navigate to the team members page
    */
   async goto() {
-    await this.page.goto(`${this.baseUrl}/teams/members`, { timeout: 60000 });
+    await this.page.goto('/teams/members', { timeout: 60000 });
   }
 
   /**

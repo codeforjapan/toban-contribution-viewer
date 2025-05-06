@@ -20,7 +20,7 @@ export class AnalysisPage {
    * Navigate to the analysis page
    */
   async goto() {
-    await this.page.goto(`${this.baseUrl}/analysis`, { timeout: 60000 });
+    await this.page.goto('/analysis', { timeout: 60000 });
   }
 
   /**
@@ -152,7 +152,7 @@ export class AnalysisResultsPage {
    * @param analysisId ID of the analysis
    */
   async goto(analysisId: string) {
-    await this.page.goto(`${this.baseUrl}/analysis/${analysisId}`, { timeout: 60000 });
+    await this.page.goto(`/analysis/${analysisId}`, { timeout: 60000 });
   }
 
   /**
