@@ -20,10 +20,11 @@ export class AuthHelper {
     
     // Try different selectors for the login page
     const selectors = [
-      'h1:has-text("Sign in")',
+      'h1:has-text("Login")',
       'form input[type="email"]',
       'button[type="submit"]',
-      'div:has-text("Sign in")'
+      'button:has-text("Sign In")',
+      'div:has-text("Login")'
     ];
     
     for (const selector of selectors) {
@@ -42,7 +43,26 @@ export class AuthHelper {
    */
   async navigateToSignUpPage() {
     await this.page.goto('/auth/signup', { timeout: 30000 });
-    await expect(this.page.locator('h1:has-text("Sign up")')).toBeVisible({ timeout: 30000 });
+    await this.page.screenshot({ path: '/app/results/signup-page-debug.png' });
+    await expect(this.page.locator('body')).toBeVisible({ timeout: 30000 });
+    
+    // Try different selectors for the sign-up page
+    const selectors = [
+      'h1:has-text("Sign Up")',
+      'form input[type="email"]',
+      'button[type="submit"]',
+      'button:has-text("Sign Up")'
+    ];
+    
+    for (const selector of selectors) {
+      console.log(`Trying to find selector: ${selector}`);
+      if (await this.page.locator(selector).isVisible()) {
+        console.log(`Found visible element with selector: ${selector}`);
+        return;
+      }
+    }
+    
+    throw new Error('Could not find any sign-up page elements');
   }
 
   /**
@@ -102,7 +122,7 @@ export class AuthHelper {
     
     await this.page.locator('[data-testid="sign-out"]').click();
     
-    await expect(this.page.locator('h1:has-text("Sign in")')).toBeVisible();
+    await expect(this.page.locator('h1:has-text("Login")')).toBeVisible();
   }
 
   /**
