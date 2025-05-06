@@ -1,0 +1,92 @@
+import { Page, expect } from '@playwright/test';
+
+/**
+ * Helper functions for Slack integration-related operations
+ */
+export class SlackHelper {
+  constructor(private page: Page) {}
+
+  /**
+   * Navigate to the integrations page
+   */
+  async navigateToIntegrationsPage() {
+    await this.page.goto('/integrations');
+    await expect(this.page.locator('h1:has-text("Integrations")')).toBeVisible();
+  }
+
+  /**
+   * Connect a Slack workspace
+   * @param workspaceName Name to give to the integration
+   */
+  async connectSlackWorkspace(workspaceName: string) {
+    await this.navigateToIntegrationsPage();
+    
+    await this.page.locator('[data-testid="add-integration-button"]').click();
+    
+    await this.page.locator('[data-testid="integration-type-slack"]').click();
+    
+    await this.page.locator('input[name="name"]').fill(workspaceName);
+    
+    await this.page.locator('[data-testid="connect-slack-button"]').click();
+    
+    await expect(this.page.locator('text=Successfully connected to Slack')).toBeVisible({ timeout: 10000 });
+  }
+
+  /**
+   * Sync channels for a Slack integration
+   * @param integrationName Name of the integration to sync
+   */
+  async syncChannels(integrationName: string) {
+    await this.navigateToIntegrationsPage();
+    
+    await this.page.locator(`[data-testid="integration-item-${integrationName}"]`).click();
+    
+    await this.page.locator('[data-testid="sync-channels-button"]').click();
+    
+    await expect(this.page.locator('text=Channels synchronized successfully')).toBeVisible({ timeout: 15000 });
+  }
+
+  /**
+   * Select channels for analysis
+   * @param channelNames Array of channel names to select
+   */
+  async selectChannelsForAnalysis(channelNames: string[]) {
+    
+    await this.page.locator('[data-testid="channels-tab"]').click();
+    
+    for (const channelName of channelNames) {
+      await this.page.locator(`[data-testid="channel-${channelName}"] [data-testid="select-channel-checkbox"]`).check();
+    }
+    
+    await this.page.locator('[data-testid="save-channel-selection"]').click();
+    
+    await expect(this.page.locator('text=Channel selection saved')).toBeVisible({ timeout: 5000 });
+  }
+
+  /**
+   * Check if a Slack integration exists
+   * @param integrationName Name of the integration to check
+   */
+  async integrationExists(integrationName: string) {
+    await this.navigateToIntegrationsPage();
+    return await this.page.locator(`[data-testid="integration-item-${integrationName}"]`).isVisible();
+  }
+
+  /**
+   * Get the list of available channels
+   * @returns Array of channel names
+   */
+  async getAvailableChannels() {
+    const channelElements = await this.page.locator('[data-testid^="channel-"]').all();
+    
+    const channelNames = [];
+    for (const element of channelElements) {
+      const nameElement = await element.locator('.channel-name').first();
+      if (nameElement) {
+        channelNames.push(await nameElement.textContent() || '');
+      }
+    }
+    
+    return channelNames;
+  }
+}
