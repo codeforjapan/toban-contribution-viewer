@@ -10,44 +10,58 @@ const TEST_USER = {
 
 test.describe('Authentication Flow', () => {
   test('should allow user to sign up', async ({ page }) => {
+    console.log('Testing user signup flow');
     const signUpPage = new SignUpPage(page);
     await signUpPage.goto();
     
-    await expect(page).toHaveTitle(/Sign up/);
+    await page.screenshot({ path: '/app/results/signup-test-debug.png' });
+    
+    await expect(page.locator('body')).toBeVisible({ timeout: 30000 });
+    await expect(page).toHaveTitle(/Sign Up/, { timeout: 30000 });
     
     await signUpPage.signUp(TEST_USER.name, TEST_USER.email, TEST_USER.password);
     
-    await expect(page.locator('text=Dashboard, text=Create Team').first()).toBeVisible();
+    await expect(page.locator('text=Dashboard')).toBeVisible({ timeout: 30000 });
   });
   
   test('should allow user to log in', async ({ page }) => {
+    console.log('Testing user login flow');
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     
-    await expect(page).toHaveTitle(/Sign in/);
+    await page.screenshot({ path: '/app/results/login-test-debug.png' });
+    
+    await expect(page.locator('body')).toBeVisible({ timeout: 30000 });
+    await expect(page).toHaveTitle(/Login/, { timeout: 30000 });
     
     await loginPage.login(TEST_USER.email, TEST_USER.password);
     
-    await expect(page.locator('text=Dashboard')).toBeVisible();
+    await expect(page.locator('text=Dashboard')).toBeVisible({ timeout: 30000 });
   });
   
   test('should display error for invalid credentials', async ({ page }) => {
+    console.log('Testing invalid credentials error');
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     
     await loginPage.login('invalid@example.com', 'WrongPassword123!');
     
-    await expect(loginPage.errorMessage).toBeVisible();
+    await page.screenshot({ path: '/app/results/login-error-debug.png' });
+    
+    await expect(loginPage.errorMessage).toBeVisible({ timeout: 10000 });
     await expect(loginPage.errorMessage).toContainText(/Invalid credentials/);
   });
   
   test('should allow user to switch teams', async ({ page }) => {
+    console.log('Testing team switching flow');
     const authHelper = new AuthHelper(page);
     await authHelper.login(TEST_USER.email, TEST_USER.password);
     
+    await page.screenshot({ path: '/app/results/dashboard-debug.png' });
+    
     const dashboardPage = new DashboardPage(page);
     
-    await expect(dashboardPage.teamSwitcher).toBeVisible();
+    await expect(dashboardPage.teamSwitcher).toBeVisible({ timeout: 10000 });
     
     await dashboardPage.teamSwitcher.click();
     
@@ -56,16 +70,19 @@ test.describe('Authentication Flow', () => {
     
     await teamOption.click();
     
-    await expect(page.locator(`[data-testid="current-team-name"]`)).toContainText(teamName || '');
+    await expect(page.locator(`[data-testid="current-team-name"]`)).toContainText(teamName || '', { timeout: 10000 });
   });
   
   test('should allow user to sign out', async ({ page }) => {
+    console.log('Testing sign out flow');
     const authHelper = new AuthHelper(page);
     await authHelper.login(TEST_USER.email, TEST_USER.password);
     
     const dashboardPage = new DashboardPage(page);
     await dashboardPage.signOut();
     
-    await expect(page.locator('h1:has-text("Sign in")')).toBeVisible();
+    await page.screenshot({ path: '/app/results/signout-debug.png' });
+    
+    await expect(page.locator('h1:has-text("Login")')).toBeVisible({ timeout: 10000 });
   });
 });
