@@ -24,7 +24,8 @@ export class LoginPage {
    * Navigate to the login page
    */
   async goto() {
-    await this.page.goto('/auth/login', { timeout: 60000 });
+    console.log('Navigating to login page: /login');
+    await this.page.goto('/login', { timeout: 60000 });
   }
 
   /**
@@ -65,7 +66,8 @@ export class SignUpPage {
    * Navigate to the sign up page
    */
   async goto() {
-    await this.page.goto('/auth/signup', { timeout: 60000 });
+    console.log('Navigating to signup page: /signup');
+    await this.page.goto('/signup', { timeout: 60000 });
   }
 
   /**
@@ -102,6 +104,7 @@ export class DashboardPage {
    * Navigate to the dashboard page
    */
   async goto() {
+    console.log('Navigating to dashboard page: /dashboard');
     await this.page.goto('/dashboard', { timeout: 60000 });
   }
 
