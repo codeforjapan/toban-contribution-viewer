@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('basic application flow', async ({ page }) => {
-  await page.goto(process.env.FRONTEND_URL || 'http://test-frontend:5173');
+  await page.goto('/');
   
   await expect(page).toHaveTitle(/Toban Contribution Viewer/);
   
