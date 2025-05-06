@@ -7,11 +7,9 @@ export class IntegrationsPage {
   readonly page: Page;
   readonly addIntegrationButton: Locator;
   readonly integrationsList: Locator;
-  private baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
-    this.baseUrl = 'http://test-frontend:5173';
     this.addIntegrationButton = page.locator('[data-testid="add-integration-button"]');
     this.integrationsList = page.locator('[data-testid="integrations-list"]');
   }
@@ -76,11 +74,9 @@ export class IntegrationDetailsPage {
   readonly channelsTab: Locator;
   readonly channelsList: Locator;
   readonly saveSelectionButton: Locator;
-  private baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
-    this.baseUrl = 'http://test-frontend:5173';
     this.syncButton = page.locator('[data-testid="sync-channels-button"]');
     this.channelsTab = page.locator('[data-testid="channels-tab"]');
     this.channelsList = page.locator('[data-testid="channels-list"]');

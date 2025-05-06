@@ -4,19 +4,7 @@ import { Page, expect } from '@playwright/test';
  * Helper functions for authentication-related operations
  */
 export class AuthHelper {
-  private baseUrl: string;
-
   constructor(private page: Page) {
-    this.baseUrl = 'http://test-frontend:5173';
-  }
-  
-  /**
-   * Get full URL for a path
-   * @param path Path to append to base URL
-   * @returns Full URL
-   */
-  private getUrl(path: string): string {
-    return `${this.baseUrl}${path}`;
   }
 
   /**

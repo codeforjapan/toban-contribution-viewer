@@ -7,11 +7,9 @@ export class TeamsPage {
   readonly page: Page;
   readonly createTeamButton: Locator;
   readonly teamsList: Locator;
-  private baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
-    this.baseUrl = 'http://test-frontend:5173';
     this.createTeamButton = page.locator('[data-testid="create-team-button"]');
     this.teamsList = page.locator('[data-testid="teams-list"]');
   }
@@ -77,11 +75,9 @@ export class TeamMembersPage {
   readonly page: Page;
   readonly inviteMemberButton: Locator;
   readonly membersList: Locator;
-  private baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
-    this.baseUrl = 'http://test-frontend:5173';
     this.inviteMemberButton = page.locator('[data-testid="invite-member-button"]');
     this.membersList = page.locator('[data-testid="members-list"]');
   }
