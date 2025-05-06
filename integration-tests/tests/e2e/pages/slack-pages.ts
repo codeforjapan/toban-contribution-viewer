@@ -7,9 +7,11 @@ export class IntegrationsPage {
   readonly page: Page;
   readonly addIntegrationButton: Locator;
   readonly integrationsList: Locator;
+  private baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
+    this.baseUrl = 'http://test-frontend:5173';
     this.addIntegrationButton = page.locator('[data-testid="add-integration-button"]');
     this.integrationsList = page.locator('[data-testid="integrations-list"]');
   }
@@ -18,7 +20,7 @@ export class IntegrationsPage {
    * Navigate to the integrations page
    */
   async goto() {
-    await this.page.goto('/integrations');
+    await this.page.goto(`${this.baseUrl}/integrations`, { timeout: 60000 });
   }
 
   /**
@@ -74,9 +76,11 @@ export class IntegrationDetailsPage {
   readonly channelsTab: Locator;
   readonly channelsList: Locator;
   readonly saveSelectionButton: Locator;
+  private baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
+    this.baseUrl = 'http://test-frontend:5173';
     this.syncButton = page.locator('[data-testid="sync-channels-button"]');
     this.channelsTab = page.locator('[data-testid="channels-tab"]');
     this.channelsList = page.locator('[data-testid="channels-list"]');
@@ -88,7 +92,7 @@ export class IntegrationDetailsPage {
    * @param integrationId ID of the integration
    */
   async goto(integrationId: string) {
-    await this.page.goto(`/integrations/${integrationId}`);
+    await this.page.goto(`${this.baseUrl}/integrations/${integrationId}`, { timeout: 60000 });
   }
 
   /**
@@ -120,10 +124,10 @@ export class IntegrationDetailsPage {
    * Get the list of available channels
    * @returns Array of channel names
    */
-  async getAvailableChannels() {
+  async getAvailableChannels(): Promise<string[]> {
     const channelElements = await this.page.locator('[data-testid^="channel-"]').all();
     
-    const channelNames = [];
+    const channelNames: string[] = [];
     for (const element of channelElements) {
       const nameElement = await element.locator('.channel-name').first();
       if (nameElement) {

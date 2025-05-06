@@ -7,9 +7,11 @@ export class AnalysisPage {
   readonly page: Page;
   readonly newAnalysisButton: Locator;
   readonly analysisList: Locator;
+  private baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
+    this.baseUrl = 'http://test-frontend:5173';
     this.newAnalysisButton = page.locator('[data-testid="new-analysis-button"]');
     this.analysisList = page.locator('[data-testid="analysis-list"]');
   }
@@ -18,7 +20,7 @@ export class AnalysisPage {
    * Navigate to the analysis page
    */
   async goto() {
-    await this.page.goto('/analysis');
+    await this.page.goto(`${this.baseUrl}/analysis`, { timeout: 60000 });
   }
 
   /**
@@ -33,10 +35,10 @@ export class AnalysisPage {
    * Get the list of completed analyses
    * @returns Array of analysis IDs
    */
-  async getCompletedAnalyses() {
+  async getCompletedAnalyses(): Promise<string[]> {
     const analysisItems = await this.page.locator('[data-testid^="analysis-item-"]').all();
     
-    const analysisIds = [];
+    const analysisIds: string[] = [];
     for (const item of analysisItems) {
       const idAttr = await item.getAttribute('data-testid');
       if (idAttr) {
@@ -60,9 +62,11 @@ export class NewAnalysisPage {
   readonly endDateInput: Locator;
   readonly analysisTypeSelect: Locator;
   readonly startAnalysisButton: Locator;
+  private baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
+    this.baseUrl = 'http://test-frontend:5173';
     this.integrationSelect = page.locator('[data-testid="integration-select"]');
     this.timeRangeSelect = page.locator('[data-testid="time-range-select"]');
     this.startDateInput = page.locator('[data-testid="start-date"]');
@@ -134,9 +138,11 @@ export class AnalysisResultsPage {
   readonly page: Page;
   readonly resultsContainer: Locator;
   readonly generateReportButton: Locator;
+  private baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
+    this.baseUrl = 'http://test-frontend:5173';
     this.resultsContainer = page.locator('[data-testid="analysis-results"]');
     this.generateReportButton = page.locator('[data-testid="generate-report-button"]');
   }
@@ -146,7 +152,7 @@ export class AnalysisResultsPage {
    * @param analysisId ID of the analysis
    */
   async goto(analysisId: string) {
-    await this.page.goto(`/analysis/${analysisId}`);
+    await this.page.goto(`${this.baseUrl}/analysis/${analysisId}`, { timeout: 60000 });
   }
 
   /**

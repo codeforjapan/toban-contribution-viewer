@@ -10,9 +10,11 @@ export class LoginPage {
   readonly submitButton: Locator;
   readonly signUpLink: Locator;
   readonly errorMessage: Locator;
+  private baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
+    this.baseUrl = 'http://test-frontend:5173';
     this.emailInput = page.locator('input[type="email"]');
     this.passwordInput = page.locator('input[type="password"]');
     this.submitButton = page.locator('button[type="submit"]');
@@ -24,7 +26,7 @@ export class LoginPage {
    * Navigate to the login page
    */
   async goto() {
-    await this.page.goto('/auth/login');
+    await this.page.goto(`${this.baseUrl}/auth/login`, { timeout: 60000 });
   }
 
   /**
@@ -50,9 +52,11 @@ export class SignUpPage {
   readonly submitButton: Locator;
   readonly loginLink: Locator;
   readonly errorMessage: Locator;
+  private baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
+    this.baseUrl = 'http://test-frontend:5173';
     this.nameInput = page.locator('input[name="name"]');
     this.emailInput = page.locator('input[type="email"]');
     this.passwordInput = page.locator('input[type="password"]');
@@ -65,7 +69,7 @@ export class SignUpPage {
    * Navigate to the sign up page
    */
   async goto() {
-    await this.page.goto('/auth/signup');
+    await this.page.goto(`${this.baseUrl}/auth/signup`, { timeout: 60000 });
   }
 
   /**
@@ -90,9 +94,11 @@ export class DashboardPage {
   readonly userMenu: Locator;
   readonly teamSwitcher: Locator;
   readonly signOutButton: Locator;
+  private baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
+    this.baseUrl = 'http://test-frontend:5173';
     this.userMenu = page.locator('[data-testid="user-menu"]');
     this.teamSwitcher = page.locator('[data-testid="team-switcher"]');
     this.signOutButton = page.locator('[data-testid="sign-out"]');
@@ -102,7 +108,7 @@ export class DashboardPage {
    * Navigate to the dashboard page
    */
   async goto() {
-    await this.page.goto('/dashboard');
+    await this.page.goto(`${this.baseUrl}/dashboard`, { timeout: 60000 });
   }
 
   /**

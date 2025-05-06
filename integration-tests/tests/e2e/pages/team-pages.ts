@@ -7,9 +7,11 @@ export class TeamsPage {
   readonly page: Page;
   readonly createTeamButton: Locator;
   readonly teamsList: Locator;
+  private baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
+    this.baseUrl = 'http://test-frontend:5173';
     this.createTeamButton = page.locator('[data-testid="create-team-button"]');
     this.teamsList = page.locator('[data-testid="teams-list"]');
   }
@@ -18,7 +20,7 @@ export class TeamsPage {
    * Navigate to the teams page
    */
   async goto() {
-    await this.page.goto('/teams');
+    await this.page.goto(`${this.baseUrl}/teams`, { timeout: 60000 });
   }
 
   /**
@@ -75,9 +77,11 @@ export class TeamMembersPage {
   readonly page: Page;
   readonly inviteMemberButton: Locator;
   readonly membersList: Locator;
+  private baseUrl: string;
 
   constructor(page: Page) {
     this.page = page;
+    this.baseUrl = 'http://test-frontend:5173';
     this.inviteMemberButton = page.locator('[data-testid="invite-member-button"]');
     this.membersList = page.locator('[data-testid="members-list"]');
   }
@@ -86,7 +90,7 @@ export class TeamMembersPage {
    * Navigate to the team members page
    */
   async goto() {
-    await this.page.goto('/teams/members');
+    await this.page.goto(`${this.baseUrl}/teams/members`, { timeout: 60000 });
   }
 
   /**
@@ -127,10 +131,10 @@ export class TeamMembersPage {
    * Get the list of team members
    * @returns Array of member emails
    */
-  async getTeamMembers() {
+  async getTeamMembers(): Promise<string[]> {
     const memberRows = await this.page.locator('[data-testid^="member-row-"]').all();
     
-    const memberEmails = [];
+    const memberEmails: string[] = [];
     for (const row of memberRows) {
       const emailElement = await row.locator('.member-email').first();
       if (emailElement) {
