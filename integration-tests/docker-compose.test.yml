@@ -132,6 +132,8 @@ services:
       - ./utils:/app/utils
       - ./setup:/app/setup
       - ./results:/app/results
+      - ./tests/e2e/helpers:/app/tests/e2e/helpers
+      - ./tests/e2e/pages:/app/tests/e2e/pages
     environment:
       - BACKEND_URL=http://test-backend:8000
       - FRONTEND_URL=http://test-frontend:5173
