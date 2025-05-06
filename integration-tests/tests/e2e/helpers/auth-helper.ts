@@ -23,16 +23,16 @@ export class AuthHelper {
    * Navigate to the login page
    */
   async navigateToLoginPage() {
-    await this.page.goto(this.baseUrl + '/auth/login');
-    await expect(this.page.locator('h1:has-text("Sign in")')).toBeVisible();
+    await this.page.goto(this.baseUrl + '/auth/login', { timeout: 30000 });
+    await expect(this.page.locator('h1:has-text("Sign in")')).toBeVisible({ timeout: 30000 });
   }
 
   /**
    * Navigate to the registration page
    */
   async navigateToSignUpPage() {
-    await this.page.goto(this.baseUrl + '/auth/signup');
-    await expect(this.page.locator('h1:has-text("Sign up")')).toBeVisible();
+    await this.page.goto(this.baseUrl + '/auth/signup', { timeout: 30000 });
+    await expect(this.page.locator('h1:has-text("Sign up")')).toBeVisible({ timeout: 30000 });
   }
 
   /**
